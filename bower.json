@@ -16,6 +16,6 @@
 	},
 	"license": "MIT",
 	"homepage": "https://github.com/ju4nit0/wa-firebase-login",
-	"private": true,
+	"private": false,
 	"ignore": []
 }
