@@ -10,7 +10,7 @@
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../polymerfire/firebase-document.html">
 
-<dom-module id="wa-login">
+<dom-module id="wa-firebase-login">
     <template>
         <style include="shared-styles">
             :host {
@@ -108,8 +108,8 @@
     </template>
 
     <script>
-        class WaLogin extends Polymer.Element {
-            static get is() { return 'wa-login'; }
+        class WaFirebaseLogin extends Polymer.Element {
+            static get is() { return 'wa-firebase-login'; }
             ready() {
                 super.ready();
                 this.email = '';
@@ -222,6 +222,6 @@
             }
         }
 
-        window.customElements.define(WaLogin.is, WaLogin);
+        window.customElements.define(WaFirebaseLogin.is, WaFirebaseLogin);
     </script>
 </dom-module>
