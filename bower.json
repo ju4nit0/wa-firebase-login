@@ -1,0 +1,21 @@
+{
+	"name": "wa-firebase-login",
+	"version": "0.1.0",
+	"authors": [
+		"ju4nit0 (White App)"
+	],
+	"keywords": [
+		"firebase",
+		"login"
+	],
+	"description": "custom firebase login",
+	"main": "wa-firebase-login.html",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/ju4nit0/wa-firebase-login.git"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/ju4nit0/wa-firebase-login",
+	"private": true,
+	"ignore": []
+}

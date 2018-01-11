@@ -1,0 +1,227 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-image/iron-image.html">
+<link rel="import" href="../iron-icons/communication-icons.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="../polymerfire/firebase-document.html">
+
+<dom-module id="wa-login">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+            #login_container{
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 0 24px;
+            }
+            .debug{
+                background-color: #ffa50029;
+                border-radius: 8px;
+                margin: 16px 0;
+                padding: 16px;
+            }
+            .login{
+                margin: 0;
+            }
+            .logo_container{
+                margin-bottom: 16px;
+                text-align: center;
+            }
+            .logo_container .logo{
+                width:100px;
+                height:100px;
+            }
+            #app_name{
+                margin: 10% auto 0;
+                font-size: 24px;
+                line-height: 24px;
+                color: var(--app-primary-color);
+            }
+            #by_wa{
+                max-width: 500px;
+                font-size: 16px;
+                color: #666;
+            }
+        </style>
+
+        <firebase-auth id="auth" app-name="{{appName}}" user="{{loginUser}}"  signed-in="{{signedIn}}" status-known="{{statusKnown}}"></firebase-auth>
+
+        <firebase-document
+                app-name="{{appName}}"
+                path="/users/[[loginUser.uid]]"
+                data="{{user}}">
+        </firebase-document>
+
+        [[status]]
+        <template is="dom-if" if="[[_match(status, 'unlogged')]]">
+            <div id="login_container">
+                <div id="app_name">Sc00re</div>
+                <div id="by_wa">by White App</div>
+                <div class="logo_container">
+                    <iron-image class="logo" src="/images/manifest/icon-144x144.png" sizing="contain"></iron-image>
+                </div>
+                <div class="card login">
+                    <h3>Login</h3>
+                    <form>
+                        <paper-input id="user"
+                                    autocomplete="email"
+                                    type="email"
+                                    label="email"
+                                    value="{{email}}"
+                                    auto-validate
+                                    error-message="email incorrecto">
+                            <iron-icon icon="mail" slot="prefix"></iron-icon>
+                        </paper-input>
+                        <paper-input id="pwd"
+                                    autocomplete="current-password"
+                                    type="password"
+                                    label="contraseña"
+                                    value="{{password}}">
+                            <iron-icon icon="communication:vpn-key" slot="prefix"></iron-icon>
+                        </paper-input>
+                    </form>
+
+                    <paper-button class="primary" raised on-tap="_logIn">entrar</paper-button>
+                    <paper-button on-tap="_register">registrarme</paper-button>
+                </div>
+                <paper-button on-tap="_passwordRecovery">olvidé mi contraseña</paper-button>
+
+                <template is="dom-if" if="{{debug}}">
+                    <div class="debug">
+                        email: {{email}}<br/>
+                        password: {{password}}<br/>
+                        status-known: {{statusKnown}}<br/>
+                        signedIn: {{signedIn}}<br/>
+                        <wa-debug data="{{user}}"></wa-debug><br/>
+                        <paper-button raised on-tap="_logOut">cerrar sesión</paper-button>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </template>
+
+    <script>
+        class WaLogin extends Polymer.Element {
+            static get is() { return 'wa-login'; }
+            ready() {
+                super.ready();
+                this.email = '';
+                this.password = '';
+            }
+            static get properties() {
+                return {
+                    debug: {
+                        type: Boolean,
+                        value: false
+                    },
+                    appName: {
+                        type: String
+                    },
+                    user: {
+                        type: Object,
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    statusKnown: {
+                        type: Boolean,
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    userLoaded:{
+                        type: Boolean,
+                        notify: true,
+                        value: false
+                    },
+                    signedIn: {
+                        type: Boolean,
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    toast:{
+                        type: Object,
+                        notify: true
+                    },
+                    status:{
+                        type: String,
+                        notify: true,
+                        value: "loading"
+                    }
+                }
+            }
+            static get observers() {
+                return [
+                    '_refreshStatus(statusKnown, signedIn, user)'
+                ]
+            }
+            _logIn(){
+                var scope = this;
+                this.$.auth.signInWithEmailAndPassword(this.email, this.password)
+                    .then(function(response) {
+                        scope.toast = {
+                            text: "Bienvenido",
+                            class: "good"
+                        };
+                        scope.password = "";
+                    })
+                    .catch(function(error) {
+                        scope._showError(error);
+                    });
+            }
+            _logOut(){
+                this.$.auth.signOut();
+            }
+            _register(){
+                var scope = this;
+                this.$.auth.createUserWithEmailAndPassword(this.email, this.password).
+                    then(function(response) {
+                        scope.toast = {
+                            text: "Registro correcto",
+                            class: "good"
+                        };
+                        scope.password = "";
+                    })
+                    .catch(function(error) {
+                        scope._showError(error);
+                    });;
+            }
+            _passwordRecovery(){
+                console.log("trying to restore password");
+            }
+            _showError(e){
+                this.toast = {
+                    text: e.message,
+                    class: "bad"
+                };
+            }
+            _refreshStatus(statusKnown, signedIn, user){
+                console.log("_refreshStatus");
+                if(!statusKnown){
+                    this.status = "loading";
+                }else{
+                    if(!signedIn){
+                        this.status = "unlogged";
+                    }else{
+                        if(Object.keys(user).length){
+                            this.user.key = this.loginUser.uid;
+                            this.status = "logged";
+                        }else{
+                            this.status = "logging"
+                        }
+                    }
+                }
+            }
+            _match(a,b){
+                return a==b;
+            }
+        }
+
+        window.customElements.define(WaLogin.is, WaLogin);
+    </script>
+</dom-module>
