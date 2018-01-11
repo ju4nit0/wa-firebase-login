@@ -21,7 +21,7 @@
                 margin: 0 auto;
                 padding: 0 24px;
             }
-            .debug{
+            .log{
                 background-color: #ffa50029;
                 border-radius: 8px;
                 margin: 16px 0;
@@ -59,14 +59,13 @@
                 data="{{user}}">
         </firebase-document>
 
-        <template is="dom-if" if="{{debug}}">
-            <div class="debug">
+        <template is="dom-if" if="{{log}}">
+            <div class="log">
                 [[status]]
                 email: {{email}}<br/>
                 password: {{password}}<br/>
                 status-known: {{statusKnown}}<br/>
                 signedIn: {{signedIn}}<br/>
-                <wa-debug data="{{user}}"></wa-debug><br/>
                 <paper-button raised on-tap="_logOut">cerrar sesión</paper-button>
             </div>
         </template>
@@ -117,7 +116,7 @@
             }
             static get properties() {
                 return {
-                    debug: {
+                    log: {
                         type: Boolean,
                         value: false
                     },
