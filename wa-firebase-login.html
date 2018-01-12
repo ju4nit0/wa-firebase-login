@@ -116,6 +116,12 @@
             }
             static get properties() {
                 return {
+                    email:{
+                        type: String
+                    },  
+                    password:{
+                        type: String
+                    },                    
                     log: {
                         type: Boolean,
                         value: false
@@ -125,21 +131,6 @@
                     },
                     user: {
                         type: Object,
-                        notify: true,
-                        reflectToAttribute: true
-                    },
-                    statusKnown: {
-                        type: Boolean,
-                        notify: true,
-                        reflectToAttribute: true
-                    },
-                    userLoaded:{
-                        type: Boolean,
-                        notify: true,
-                        value: false
-                    },
-                    signedIn: {
-                        type: Boolean,
                         notify: true,
                         reflectToAttribute: true
                     },
