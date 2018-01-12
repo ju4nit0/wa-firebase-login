@@ -168,11 +168,11 @@
             _logOut(){
                 this.$.auth.signOut();
                 this.dispatchEvent(new CustomEvent('toast', {
-                            detail: {
-                                text: "Sesión cerrada",
-                                class: "good"
-                            }
-                        }));
+                    detail: {
+                        text: "Sesión cerrada",
+                        class: "good"
+                    }
+                }));
             }
             _register(){
                 var scope = this;
