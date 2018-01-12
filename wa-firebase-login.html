@@ -198,24 +198,22 @@
             _refreshStatus(statusKnown, signedIn, user){
                 if(!statusKnown){
                     this.status = "loading";
-                    this.logged = false;
                 }else{
                     if(!signedIn){
                         this.status = "unlogged";
-                        this.logged = false;
                     }else{
                         if(Object.keys(user).length){
                             this.user.key = this.loginUser.uid;
                             this.status = "logged";
-                            this.logged = true;
                         }else{
                             this.status = "logging";
-                            this.logged = false;
                         }
                     }
                 }
+                this.logged = (this.status == "logged");
                 if(this.log){
                    console.log("WA-FIREBASE-LOGIN > status: "+this.status);
+                   console.log("WA-FIREBASE-LOGIN > logged: "+this.logged);
                 }
             }
             _match(a,b){
