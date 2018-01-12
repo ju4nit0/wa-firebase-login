@@ -212,9 +212,11 @@
                 console.log("_refreshStatus");
                 if(!statusKnown){
                     this.status = "loading";
+                    this.logged = false;
                 }else{
                     if(!signedIn){
                         this.status = "unlogged";
+                        this.logged = false;
                     }else{
                         if(Object.keys(user).length){
                             this.user.key = this.loginUser.uid;
@@ -222,6 +224,7 @@
                             this.logged = true;
                         }else{
                             this.status = "logging";
+                            this.logged = false;
                         }
                     }
                 }
