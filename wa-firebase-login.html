@@ -49,6 +49,7 @@
                 font-size: 16px;
                 color: #666;
             }
+            
         </style>
 
         <firebase-auth id="auth" app-name="{{appName}}" user="{{loginUser}}"  signed-in="{{signedIn}}" status-known="{{statusKnown}}"></firebase-auth>
@@ -69,6 +70,21 @@
                 <paper-button raised on-tap="_logOut">cerrar sesión</paper-button>
             </div>
         </template>
+
+        <template is="dom-if" if="[[_match(status, 'loading')]]">
+            <div class="card loading" hidden$="{{statusKnown}}">
+                <h4>cargando aplicaciónnnnnnnnnnn</h4><br/>
+                <paper-spinner active></paper-spinner>
+            </div>
+        </template>
+        
+        <template is="dom-if" if="[[_match(status, 'logging')]]">
+            <div class="card loading" hidden$="{{statusKnown}}">
+                <h4>cargando usuarioo</h4><br/>
+                <paper-spinner active></paper-spinner>
+            </div>
+        </template>
+
         <template is="dom-if" if="[[_match(status, 'unlogged')]]">
             <div id="login_container">
                 <div id="app_name">Sc00re</div>
@@ -134,10 +150,10 @@
                         notify: true,
                         reflectToAttribute: true
                     },
-                    status:{
-                        type: String,
+                    logged:{
+                        type: bool,
                         notify: true,
-                        value: "loading"
+                        value: false
                     }
                 }
             }
@@ -203,8 +219,9 @@
                         if(Object.keys(user).length){
                             this.user.key = this.loginUser.uid;
                             this.status = "logged";
+                            this.logged = true;
                         }else{
-                            this.status = "logging"
+                            this.status = "logging";
                         }
                     }
                 }
