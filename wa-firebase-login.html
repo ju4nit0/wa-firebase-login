@@ -167,6 +167,12 @@
             }
             _logOut(){
                 this.$.auth.signOut();
+                scope.dispatchEvent(new CustomEvent('toast', {
+                            detail: {
+                                text: "Sesión cerrada",
+                                class: "good"
+                            }
+                        }));
             }
             _register(){
                 var scope = this;
