@@ -163,10 +163,12 @@
                 var scope = this;
                 this.$.auth.signInWithEmailAndPassword(this.email, this.password)
                     .then(function(response) {
-                        scope.toast = {
-                            text: "Bienvenido",
-                            class: "good"
-                        };
+                        scope.dispatchEvent(new CustomEvent('toast', {
+                            detail: {
+                                text: "Bienvenido",
+                                class: "good"
+                            }
+                        }));
                         scope.password = "";
                     })
                     .catch(function(error) {
@@ -180,10 +182,12 @@
                 var scope = this;
                 this.$.auth.createUserWithEmailAndPassword(this.email, this.password).
                     then(function(response) {
-                        scope.toast = {
-                            text: "Registro correcto",
-                            class: "good"
-                        };
+                        scope.dispatchEvent(new CustomEvent('toast', {
+                            detail: {
+                                text: "Registro correcto",
+                                class: "good"
+                            }
+                        }));
                         scope.password = "";
                     })
                     .catch(function(error) {
@@ -194,10 +198,12 @@
                 console.log("trying to restore password");
             }
             _showError(e){
-                this.toast = {
-                    text: e.message,
-                    class: "bad"
-                };
+                this.dispatchEvent(new CustomEvent('toast', {
+                    detail: {
+                        text: e.message,
+                        class: "bad"
+                    }
+                }));
             }
             _refreshStatus(statusKnown, signedIn, user){
                 console.log("_refreshStatus");
