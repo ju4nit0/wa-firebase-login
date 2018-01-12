@@ -61,14 +61,14 @@
         </firebase-document>
 
         <template is="dom-if" if="[[_match(status, 'loading')]]">
-            <div class="card loading" hidden$="{{statusKnown}}">
+            <div class="card loading">
                 <h4>cargando aplicación</h4><br/>
                 <paper-spinner active></paper-spinner>
             </div>
         </template>
         
         <template is="dom-if" if="[[_match(status, 'logging')]]">
-            <div class="card loading" hidden$="{{statusKnown}}">
+            <div class="card loading">
                 <h4>cargando usuario</h4><br/>
                 <paper-spinner active></paper-spinner>
             </div>
