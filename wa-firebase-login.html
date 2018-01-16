@@ -9,6 +9,7 @@
 
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../polymerfire/firebase-document.html">
+<link rel="import" href="../polymerfire/firebase-query.html">
 
 <dom-module id="wa-firebase-login">
     <template>
@@ -59,6 +60,12 @@
                 path="/users/[[loginUser.uid]]"
                 data="{{user}}">
         </firebase-document>
+        <firebase-query
+                id="users"
+                app-name="{{appName}}"
+                path="/users"
+                data="{{users}}">
+        </firebase-query>
 
         <template is="dom-if" if="[[_match(status, 'loading')]]">
             <div class="card loading">
@@ -185,6 +192,7 @@
                             }
                         }));
                         scope.password = "";
+                        scope.set("users."+response.uid, {mail: scope.email, key: "value"});
                     })
                     .catch(function(error) {
                         scope._showError(error);
