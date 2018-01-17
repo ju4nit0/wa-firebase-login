@@ -199,7 +199,7 @@
                             }
                         }));
                         scope.password = "";
-                        scope.set("users."+response.uid, {mail: scope.email, key: "value"});
+                        scope.set("users."+response.uid, {uid: response.uid, mail: scope.email, key: "value"});
                     })
                     .catch(function(error) {
                         scope._showError(error);
