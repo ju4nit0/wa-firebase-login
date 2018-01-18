@@ -160,7 +160,7 @@
             }
             static get observers() {
                 return [
-                    '_refreshStatus(statusKnown, signedIn, user)'
+                    '_refreshStatus(statusKnown, signedIn, user.uid)'
                 ]
             }
             _logIn(){
@@ -199,7 +199,7 @@
                             }
                         }));
                         scope.password = "";
-                        scope.set("users."+response.uid, {uid: response.uid, mail: scope.email, key: "value"});
+                        scope.set("users."+response.uid, {uid: response.uid, mail: scope.email});
                     })
                     .catch(function(error) {
                         scope._showError(error);
@@ -216,15 +216,14 @@
                     }
                 }));
             }
-            _refreshStatus(statusKnown, signedIn, user){
+            _refreshStatus(statusKnown, signedIn, uid){
                 if(!statusKnown){
                     this.status = "loading";
                 }else{
                     if(!signedIn){
                         this.status = "unlogged";
                     }else{
-                        if(Object.keys(user).length){
-                            this.user.key = this.loginUser.uid;
+                        if(typeof uid != 'undefined'){
                             this.status = "logged";
                         }else{
                             this.status = "logging";
