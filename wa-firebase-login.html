@@ -207,6 +207,7 @@
                     }else{
                         if(typeof uid != 'undefined'){
                             this.status = "logged";
+                            this.dispatchEvent(new CustomEvent('logged'));
                         }else{
                             this.status = "logging";
                         }
