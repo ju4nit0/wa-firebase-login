@@ -41,6 +41,9 @@
                 background-color: var(--app-primary-color);
                 color: #fff;
             }
+            paper-button.register{
+                color: #fff;
+            }
             
         </style>
 
@@ -99,7 +102,7 @@
                     </form>
 
                     <paper-button raised class="white" on-tap="_logIn">entrar</paper-button>
-                    <paper-button on-tap="_register" style="color: white">registrarme</paper-button>
+                    <paper-button class="register" on-tap="_register">registrarme</paper-button>
                 </div>
                 <paper-button on-tap="_passwordRecovery">olvidé mi contraseña</paper-button>
 
